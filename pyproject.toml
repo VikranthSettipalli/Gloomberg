@@ -37,6 +37,9 @@ addopts = "-v --cov=services --cov=gateway --cov-report=term-missing"
 line-length = 100
 target-version = "py311"
 
+[tool.setuptools.packages.find]
+include = ["services*", "gateway*", "data_pipeline*"]
+
 [tool.mypy]
 python_version = "3.11"
 strict = true
