@@ -1,12 +1,23 @@
 // Market Data Types
+export interface Instrument {
+  symbol: string;
+  name: string;
+  scrip_code: string;
+  exchange: string;
+}
+
 export interface Quote {
   symbol: string;
+  name?: string;
   ltp: number;
+  change?: number;
+  change_percent?: number;
   open?: number;
   high?: number;
   low?: number;
   close?: number;
   volume?: number;
+  avg_volume?: number;
   bid?: number;
   ask?: number;
   timestamp: string;

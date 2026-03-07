@@ -1,0 +1,139 @@
+.quote-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.quote-card--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted);
+}
+
+.quote-card--loading {
+  min-height: 200px;
+}
+
+.quote-card__skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.quote-card__skeleton--title {
+  height: 20px;
+  width: 120px;
+  margin-bottom: 8px;
+}
+
+.quote-card__skeleton--price {
+  height: 40px;
+  width: 180px;
+  margin-bottom: 24px;
+}
+
+.quote-card__skeleton--row {
+  height: 60px;
+  width: 100%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.quote-card__header {
+  margin-bottom: 16px;
+}
+
+.quote-card__symbol {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.quote-card__name {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.quote-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.quote-card__ltp {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.quote-card__currency {
+  font-size: 24px;
+  font-weight: 400;
+  margin-right: 2px;
+  opacity: 0.7;
+}
+
+.quote-card__change {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.quote-card__change--positive {
+  color: var(--green);
+}
+
+.quote-card__change--negative {
+  color: var(--red);
+}
+
+.quote-card__change-percent {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.quote-card__change-absolute {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.quote-card__details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.quote-card__detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quote-card__label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.quote-card__value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}

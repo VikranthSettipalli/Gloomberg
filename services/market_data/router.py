@@ -2,14 +2,14 @@
 from datetime import date
 from fastapi import APIRouter, HTTPException, Query
 
-from services.models import Quote, OHLCV
+from services.models import Quote, OHLCV, Instrument
 from .providers.base import MarketDataProvider
-from .providers.yahoo import YahooProvider
+from .providers.bse import BSEProvider
 
 router = APIRouter(prefix="/market", tags=["market"])
 
-# Default provider (configured via gateway)
-_provider: MarketDataProvider = YahooProvider()
+# Default provider - BSE for Indian stocks
+_provider: BSEProvider = BSEProvider()
 
 
 def set_provider(provider: MarketDataProvider) -> None:
@@ -18,17 +18,36 @@ def set_provider(provider: MarketDataProvider) -> None:
     _provider = provider
 
 
+@router.get("/search", response_model=list[Instrument])
+async def search_instruments(
+    q: str = Query(..., min_length=2, description="Search query")
+) -> list[Instrument]:
+    """Search for instruments by name or symbol.
+
+    Args:
+        q: Search term (minimum 2 characters)
+    """
+    try:
+        return await _provider.search(q)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/quote/{symbol}", response_model=Quote)
 async def get_quote(symbol: str) -> Quote:
     """Get real-time quote for a symbol.
 
     Args:
-        symbol: Stock symbol (e.g., RELIANCE.NS, AAPL)
+        symbol: Stock symbol (e.g., RELIANCE)
     """
     try:
         return await _provider.get_quote(symbol)
     except NotImplementedError as e:
         raise HTTPException(status_code=501, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/history/{symbol}", response_model=list[OHLCV])
@@ -50,3 +69,7 @@ async def get_history(
         return await _provider.get_history(symbol, start, end, interval)
     except NotImplementedError as e:
         raise HTTPException(status_code=501, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

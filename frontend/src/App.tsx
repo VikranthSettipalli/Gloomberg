@@ -1,21 +1,23 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { StockDashboard } from '@/components/StockDashboard'
+import './App.css'
 
 function App() {
   return (
     <BrowserRouter>
       <div className="app">
-        <header>
-          <h1>Gloomberg</h1>
-          <nav>
-            <a href="/">Dashboard</a>
-            <a href="/screener">Screener</a>
+        <header className="app-header">
+          <Link to="/" className="app-logo">Gloomberg</Link>
+          <nav className="app-nav">
+            <Link to="/">Dashboard</Link>
+            <Link to="/screener">Screener</Link>
           </nav>
         </header>
-        <main>
+        <main className="app-main">
           <Routes>
-            <Route path="/" element={<div>Stock Dashboard (coming soon)</div>} />
-            <Route path="/screener" element={<div>Screener (coming soon)</div>} />
-            <Route path="/stock/:symbol" element={<div>Stock Detail (coming soon)</div>} />
+            <Route path="/" element={<StockDashboard />} />
+            <Route path="/stock/:symbol" element={<StockDashboard />} />
+            <Route path="/screener" element={<div className="coming-soon">Screener (coming soon)</div>} />
           </Routes>
         </main>
       </div>

@@ -1,5 +1,5 @@
 """Shared Pydantic models for all services."""
-from .market import Quote, OHLCV, HistoryRequest
+from .market import Quote, OHLCV, HistoryRequest, Instrument
 from .fundamentals import Financials, Ratios, Filing
 from .index import IndexData, Constituent
 from .estimates import Estimate, Consensus, Estimates, PriceTarget, PriceTargets, Recommendation
@@ -10,6 +10,7 @@ __all__ = [
     "Quote",
     "OHLCV",
     "HistoryRequest",
+    "Instrument",
     # Fundamentals
     "Financials",
     "Ratios",

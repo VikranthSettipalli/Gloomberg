@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__read_text_file",
+      "mcp__brain__brain_stats",
+      "Read(//c/Users/Vikranth/.claude/**)",
+      "Bash(ls:*)",
+      "Bash(claude mcp:*)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\(''mcpServers'',{}\\), indent=2\\)\\)\")",
+      "Bash(python:*)",
+      "Bash(\"E:/Claude Projects/Coding/Gloomberg/.env.example\":*)",
+      "Bash(pip install:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "mcp__brain__brain_recall",
+      "mcp__brain__brain_remember",
+      "Bash(tasklist:*)",
+      "Bash(netstat:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}
