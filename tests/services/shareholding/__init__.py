@@ -1,0 +1,1 @@
+"""Shareholding service tests."""
