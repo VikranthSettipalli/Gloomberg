@@ -15,14 +15,14 @@ export function TickerSearch({ onSelect, placeholder = 'Search stocks...' }: Tic
   const [activeIndex, setActiveIndex] = useState(-1);
   const { searchInstruments } = useMarketData();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
 
-    if (query.length < 2) {
+    if (query.length < 1) {
       setResults([]);
       setIsOpen(false);
       return;
@@ -93,7 +93,7 @@ export function TickerSearch({ onSelect, placeholder = 'Search stocks...' }: Tic
         <ul className="ticker-search__dropdown">
           {results.map((instrument, index) => (
             <li
-              key={instrument.scrip_code}
+              key={instrument.symbol}
               className={`ticker-search__item ${index === activeIndex ? 'ticker-search__item--active' : ''}`}
               onClick={() => handleSelect(instrument)}
               onMouseEnter={() => setActiveIndex(index)}

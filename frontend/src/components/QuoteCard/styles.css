@@ -1,16 +1,8 @@
 .quote-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.quote-card--empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 20px;
 }
 
 .quote-card--loading {
@@ -23,23 +15,9 @@
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
 }
-
-.quote-card__skeleton--title {
-  height: 20px;
-  width: 120px;
-  margin-bottom: 8px;
-}
-
-.quote-card__skeleton--price {
-  height: 40px;
-  width: 180px;
-  margin-bottom: 24px;
-}
-
-.quote-card__skeleton--row {
-  height: 60px;
-  width: 100%;
-}
+.quote-card__skeleton--title { height: 20px; width: 120px; margin-bottom: 8px; }
+.quote-card__skeleton--price { height: 36px; width: 180px; margin-bottom: 16px; }
+.quote-card__skeleton--row { height: 80px; width: 100%; }
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
@@ -47,93 +25,102 @@
 }
 
 .quote-card__header {
-  margin-bottom: 16px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2px;
 }
 
 .quote-card__symbol {
   font-family: var(--font-mono);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent);
   letter-spacing: 0.5px;
 }
 
-.quote-card__name {
-  font-size: 14px;
+.quote-card__sector {
+  font-size: 11px;
   color: var(--text-muted);
-  margin-top: 4px;
+}
+
+.quote-card__name {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quote-card__price-row {
   display: flex;
   align-items: baseline;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .quote-card__ltp {
   font-family: var(--font-mono);
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.5px;
 }
 
-.quote-card__currency {
-  font-size: 24px;
+.quote-card__curr {
+  font-size: 20px;
   font-weight: 400;
   margin-right: 2px;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .quote-card__change {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.quote-card__change--positive {
-  color: var(--green);
-}
-
-.quote-card__change--negative {
-  color: var(--red);
-}
-
-.quote-card__change-percent {
   font-family: var(--font-mono);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
-.quote-card__change-absolute {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  opacity: 0.8;
+.qc-positive { color: var(--green); }
+.qc-negative { color: var(--red); }
+
+.quote-card__change-abs {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-left: 4px;
 }
 
-.quote-card__details {
+.quote-card__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px 24px;
-  padding-top: 20px;
+  gap: 8px 16px;
+  padding-top: 14px;
   border-top: 1px solid var(--border);
 }
 
-.quote-card__detail {
+.quote-card__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 2px 0;
 }
 
 .quote-card__label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
 .quote-card__value {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
+}
+
+.quote-card__footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
 }

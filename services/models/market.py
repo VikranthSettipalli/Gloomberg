@@ -1,43 +1,48 @@
 """Market data models."""
 from datetime import datetime
-from decimal import Decimal
 from pydantic import BaseModel, Field
 
 
 class Instrument(BaseModel):
     """Searchable instrument/security."""
-    symbol: str = Field(description="Trading symbol (e.g., RELIANCE)")
+    symbol: str = Field(description="Trading symbol (e.g., AAPL, RELIANCE.NS)")
     name: str = Field(description="Company name")
-    scrip_code: str = Field(description="Exchange scrip code (e.g., 500325)")
-    exchange: str = Field(default="BSE", description="Exchange (BSE/NSE)")
+    scrip_code: str = Field(default="", description="Exchange scrip code")
+    exchange: str = Field(default="", description="Exchange (NYSE/NASDAQ/BSE/NSE)")
+    type: str = Field(default="equity", description="Instrument type")
 
 
 class Quote(BaseModel):
     """Real-time quote for a security."""
     symbol: str
     name: str | None = None
-    ltp: Decimal = Field(description="Last traded price")
-    change: Decimal | None = Field(default=None, description="Absolute change from prev close")
-    change_percent: Decimal | None = Field(default=None, description="Percent change from prev close")
-    open: Decimal | None = None
-    high: Decimal | None = None
-    low: Decimal | None = None
-    close: Decimal | None = Field(default=None, description="Previous close")
+    ltp: float = Field(description="Last traded price")
+    change: float | None = Field(default=None, description="Absolute change from prev close")
+    change_percent: float | None = Field(default=None, description="Percent change from prev close")
+    open: float | None = None
+    high: float | None = None
+    low: float | None = None
+    close: float | None = Field(default=None, description="Previous close")
     volume: int | None = None
     avg_volume: int | None = Field(default=None, description="Average volume")
-    bid: Decimal | None = None
-    ask: Decimal | None = None
+    bid: float | None = None
+    ask: float | None = None
     timestamp: datetime
+    market_cap: float | None = Field(default=None, description="Market capitalization")
+    pe_ratio: float | None = Field(default=None, description="Trailing P/E ratio")
+    week_52_high: float | None = None
+    week_52_low: float | None = None
+    currency: str = Field(default="USD", description="Currency code")
 
 
 class OHLCV(BaseModel):
     """OHLCV candle data."""
     symbol: str
     timestamp: datetime
-    open: Decimal
-    high: Decimal
-    low: Decimal
-    close: Decimal
+    open: float
+    high: float
+    low: float
+    close: float
     volume: int
 
 

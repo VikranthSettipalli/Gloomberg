@@ -39,13 +39,15 @@ function getDateRange(period: Period): { start: string; end: string } {
 }
 
 function transformData(data: OHLCV[]): CandlestickData<Time>[] {
-  return data.map((d) => ({
-    time: d.timestamp.split('T')[0] as Time,
-    open: d.open,
-    high: d.high,
-    low: d.low,
-    close: d.close,
-  }));
+  return data
+    .filter((d) => d.open && d.high && d.low && d.close)
+    .map((d) => ({
+      time: d.timestamp.split('T')[0] as Time,
+      open: Number(d.open),
+      high: Number(d.high),
+      low: Number(d.low),
+      close: Number(d.close),
+    }));
 }
 
 export function ChartPanel({ symbol }: ChartPanelProps) {

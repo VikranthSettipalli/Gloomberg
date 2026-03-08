@@ -391,3 +391,85 @@ For reference — this is how the platforms we're trying to replicate source the
 |---------|-------------|------------|
 | Analyst Reports (Module 5) | Link aggregation — report metadata (title, date, broker, rating) with links. No full text. | Medium |
 | Automated Indian Consensus Builder | Ingest broker research PDFs → LLM-powered extraction of key estimates → like-to-like normalization → weighted consensus → forward projections. Replaces manual entry entirely. | High |
+
+---
+
+## 12. Milestone 1 Implementation Log (Stock Terminal Page)
+
+**Date:** 2026-03-08
+**Status:** Functional MVP — all core features working
+
+### Scope Decisions (Confirmed with User)
+
+- **Market Data Provider**: Yahoo Finance (`yfinance`) as primary — free, global coverage, no API key needed
+- **Fundamentals Provider**: Yahoo Finance (FMP deferred — start without API key)
+- **Database**: SQLite for MVP (PostgreSQL/TimescaleDB deferred)
+- **Deployment**: Local only, no Docker — `uvicorn` backend + `vite` frontend dev server
+- **Priority**: Stock Terminal Page first, then Analyst Data, Screener, Financial Modeling
+- **Universe**: Global equities — AAPL, MSFT, TSLA, RELIANCE.NS, GOOGL all supported
+- **UI**: Dark theme, information-dense, inspired by Bloomberg/Screener.in
+
+### What Was Built
+
+**Backend (Python/FastAPI):**
+
+- Full Yahoo Finance provider (`services/market_data/providers/yahoo.py`) with:
+  - Ticker search via Yahoo Finance search API
+  - Real-time quotes from `yfinance` (ticker.info + fast_info fallback)
+  - Historical OHLCV data (1m to monthly intervals)
+  - Company profile (sector, industry, country, employees, description)
+  - Income statements (annual + quarterly) from ticker.financials
+  - Balance sheets from ticker.balance_sheet
+  - Cash flow statements from ticker.cashflow
+  - Financial ratios and valuation multiples from ticker.info
+- Updated market data router with new endpoints:
+  - `GET /market/search?q=` — instrument search
+  - `GET /market/quote/{symbol}` — real-time quote
+  - `GET /market/history/{symbol}?start=&end=&interval=` — OHLCV history
+  - `GET /market/profile/{symbol}` — company profile
+  - `GET /market/ratios/{symbol}` — valuation ratios
+  - `GET /market/income-statement/{symbol}?period=` — income statements
+  - `GET /market/balance-sheet/{symbol}?period=` — balance sheets
+  - `GET /market/cash-flow/{symbol}?period=` — cash flow statements
+- Routes use `{symbol:path}` for dot-containing symbols (e.g., RELIANCE.NS)
+- `asyncio.to_thread()` wraps blocking yfinance calls for async FastAPI
+
+**Frontend (React/TypeScript/Vite):**
+
+- **StockDashboard**: Main stock page — search bar, fetches quote + profile + ratios in parallel
+- **QuoteCard**: Stock price, change, open/high/low/close, 52-week range, market cap, P/E, volume
+- **ChartPanel**: TradingView Lightweight Charts candlestick chart with period toggles (1D/1W/1M/3M/1Y)
+- **ValuationPanel**: Trailing multiples, forward multiples, profitability metrics (margins, ROE, ROA, D/E)
+- **FinancialsPanel**: Tabbed income statement / balance sheet / cash flow with annual/quarterly toggle
+- **TickerSearch**: Autocomplete search with debounce
+- **useMarketData hook**: All API calls for market data service
+- Landing page with GLOOMBERG hero and quick-access ticker buttons
+
+### Key Technical Fixes
+
+1. **Decimal → float serialization**: Pydantic v2 serializes `Decimal` as strings in JSON. Changed all models from `Decimal` to `float` to ensure frontend receives proper numbers.
+2. **Frontend Number() safety**: All formatting functions (`fmtNum`, `fmtPct`, `fmtLarge`, `fmt`) accept `number | string` and convert with `Number()` for robustness.
+3. **Chart data validation**: Filter out invalid OHLCV entries (zero/negative prices) before passing to TradingView.
+4. **CORS**: Updated to allow ports 5173, 5174, 5175.
+5. **Rollup native dependency**: Required clean `rm -rf node_modules && npm install` to resolve `@rollup/rollup-win32-x64-msvc` missing module.
+
+### Running the Application
+
+```bash
+# Backend (from project root)
+python -m uvicorn gateway.main:app --host 0.0.0.0 --port 8000
+
+# Frontend (from frontend/)
+npm install
+npx vite --port 5174 --host
+
+# Access at http://localhost:5174
+```
+
+### What's Next (Milestone 2+)
+
+- Analyst Data Screen (estimates, price targets, recommendations)
+- Equity Screener
+- UI polish: company description panel, improved dark theme
+- SQLite persistence for cached data
+- Historical metric charting
